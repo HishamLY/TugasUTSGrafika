@@ -36,8 +36,8 @@ class FrameBuffer {
         //Draw Point
         void draw_point(int x, int y, Warna* c);
 
-        
-
+        //Draw Point Clip
+        void draw_point_clip(int x, int y, Warna* c);
 };
 
 #endif

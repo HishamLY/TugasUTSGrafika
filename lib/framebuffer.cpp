@@ -78,3 +78,21 @@ void FrameBuffer::draw_point(int x, int y, Warna* c) {
     }
 }
 
+void FrameBuffer::draw_point_clip(int x, int y, Warna* c) {
+    if ((x > 200 && y > 200) && (x < vinfo.xres-200 && y < vinfo.yres-200)) {
+        long int location = (x+vinfo.xoffset) * (vinfo.bits_per_pixel/8) + (y+vinfo.yoffset) * finfo.line_length;
+        if(vinfo.bits_per_pixel == 32){
+            *(fbp + location) = c->getB();
+            *(fbp + location + 1) = c->getG();
+            *(fbp + location + 2) = c->getR();
+            *(fbp + location + 3) = c->getA();
+        } else{ //assume 16 bit color
+            int b = c->getB();
+            int g = c->getG();
+            int r = c->getR();
+            unsigned short int t = r<<11 | g << 5 | b;
+            *((unsigned short int*)(fbp + location)) = t;
+        }
+    }
+}
+

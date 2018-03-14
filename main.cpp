@@ -84,6 +84,15 @@ void draw_parachute(FrameBuffer& fb, int x, int y, float size, Warna* color);
 void draw_explosion(FrameBuffer& fb, int x, int y, float size, Warna* color);
     // Tugas 5
 void draw_pilot(FrameBuffer& fb, int x, int y, float size, Warna* color);
+void draw_rectangle_clip(FrameBuffer& fb,int start_x, int start_y, int w, int h,Warna* color);
+void draw_line_low_clip(FrameBuffer& fb,int x0,int y0,int x1,int y1,Warna* color);
+void draw_line_high_clip(FrameBuffer& fb,int x0,int y0,int x1,int y1,Warna* color);
+void draw_line_clip(FrameBuffer& fb,int x0, int y0, int x1, int y1, Warna* color);
+void draw_plane_wing_right_clip(FrameBuffer& fb, int x, int y, float size, Warna* color);
+void draw_plane_wing_left_clip(FrameBuffer& fb, int x, int y, float size, Warna* color);
+void draw_plane_propeller_clip(FrameBuffer& fb, int x, int y, float size, int position, Warna* color);
+void draw_plane_wheels_clip(FrameBuffer& fb, int x, int y, float size, Warna* color);
+void draw_plane_body_clip(FrameBuffer& fb, int x, int y, float size, Warna* color);
     // Tugas 6
 void draw_box(FrameBuffer& fb, int start_x, int start_y, int len, Warna* color);
 void clear_draw_box(FrameBuffer& fb, Matriks& map, int start_x, int start_y, int s_draw_x, int s_draw_y, int len);
@@ -367,7 +376,7 @@ void Tugas4() {
     int xPR = x_pivot + 50;
     int yPR = y_pivot;
     int HIT_LINE_Y = 440;
-    bool triggered = false;    
+    bool triggered = false;
 
     // Draw rectangle
     draw_rectangle(fb,mgn,mgn,fb.getXRes()-mgn,fb.getYRes()-mgn,&blue); // Middle
@@ -420,7 +429,7 @@ void Tugas4() {
             i = 0;
         }
     }
-    
+
     draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
     draw_plane_wing_left(fb, xWL, yWL, j, &blue);
     draw_plane_wing_right(fb, xWR, yWR, j, &blue);
@@ -538,31 +547,31 @@ void Tugas5() {
     int xPR = x_pivot + 50;
     int yPR = y_pivot;
     int HIT_LINE_Y = 440;
-    bool triggered = false;    
+    bool triggered = false;
     int loop = 30;
     int k = 0;
 
     // Draw rectangle
-    draw_rectangle(fb,mgn,mgn,fb.getXRes()-mgn,fb.getYRes()-mgn,&blue); // Middle
+    draw_rectangle_clip(fb,mgn,mgn,fb.getXRes()-mgn,fb.getYRes()-mgn,&blue); // Middle
     while(j < 15) {
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &green);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &red);
-        draw_plane_wing_left(fb, xWL, yWL, j, &green);
-        draw_plane_wing_right(fb, xWR, yWR, j, &green);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &black);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &black);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &black);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &black);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &red);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &green);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &green);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &black);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &black);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &black);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &black);
 
         usleep(100000);
 
-        draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-        draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-        draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &blue);
 
         xWL -= 5;
@@ -580,26 +589,26 @@ void Tugas5() {
     }
 
     k = 0;
-    while (k < loop) {        
+    while (k < loop) {
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &green);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &red);
-        draw_plane_wing_left(fb, xWL, yWL, j, &green);
-        draw_plane_wing_right(fb, xWR, yWR, j, &green);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &black);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &black);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &black);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &black);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &red);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &green);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &green);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &black);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &black);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &black);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &black);
 
         usleep(100000);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-        draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-        draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &blue);
-        
+
         y_pivot += 10;
         yWL += 10;
         yWR += 10;
@@ -607,7 +616,7 @@ void Tugas5() {
         yWHR += 10;
         yPL += 10;
         yPR += 10;
-        
+
 
         i++;
         if (i % 3 == 0) {
@@ -617,27 +626,27 @@ void Tugas5() {
     }
 
     k = 0;
-    while (k < loop) {        
+    while (k < loop) {
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &green);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &red);
-        draw_plane_wing_left(fb, xWL, yWL, j, &green);
-        draw_plane_wing_right(fb, xWR, yWR, j, &green);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &black);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &black);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &black);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &black);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &red);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &green);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &green);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &black);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &black);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &black);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &black);
 
         usleep(100000);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-        draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-        draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &blue);
 
-        
+
         x_pivot += 10;
         xWL += 10;
         xWR += 10;
@@ -645,7 +654,7 @@ void Tugas5() {
         xWHR += 10;
         xPL += 10;
         xPR += 10;
-        
+
 
         i++;
         if (i % 3 == 0) {
@@ -655,26 +664,26 @@ void Tugas5() {
     }
 
     k = 0;
-    while (k < loop) {        
+    while (k < loop) {
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &green);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &red);
-        draw_plane_wing_left(fb, xWL, yWL, j, &green);
-        draw_plane_wing_right(fb, xWR, yWR, j, &green);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &black);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &black);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &black);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &black);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &red);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &green);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &green);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &black);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &black);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &black);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &black);
 
         usleep(100000);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-        draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-        draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &blue);
-        
+
         y_pivot -= 10;
         yWL -= 10;
         yWR -= 10;
@@ -682,7 +691,7 @@ void Tugas5() {
         yWHR -= 10;
         yPL -= 10;
         yPR -= 10;
-        
+
 
         i++;
         if (i % 3 == 0) {
@@ -692,26 +701,26 @@ void Tugas5() {
     }
 
     k = 0;
-    while (k < loop) {        
+    while (k < loop) {
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &green);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &red);
-        draw_plane_wing_left(fb, xWL, yWL, j, &green);
-        draw_plane_wing_right(fb, xWR, yWR, j, &green);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &black);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &black);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &black);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &black);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &red);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &green);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &green);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &black);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &black);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &black);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &black);
 
         usleep(100000);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-        draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-        draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &blue);
-        
+
         x_pivot -= 10;
         xWL -= 10;
         xWR -= 10;
@@ -719,7 +728,7 @@ void Tugas5() {
         xWHR -= 10;
         xPL -= 10;
         xPR -= 10;
-        
+
 
         i++;
         if (i % 3 == 0) {
@@ -730,23 +739,23 @@ void Tugas5() {
 
     while(j > 1) {
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &green);
-        draw_plane_body(fb, x_pivot, y_pivot, j, &red);
-        draw_plane_wing_left(fb, xWL, yWL, j, &green);
-        draw_plane_wing_right(fb, xWR, yWR, j, &green);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &black);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &black);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &black);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &black);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &red);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &green);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &green);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &black);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &black);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &black);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &black);
 
         usleep(100000);
 
-        draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-        draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-        draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-        draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-        draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-        draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-        draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+        draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+        draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+        draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+        draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+        draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+        draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+        draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
         draw_pilot(fb, x_pivot-8*j, y_pivot-35*j, j/8, &blue);
 
         xWL += 5;
@@ -762,14 +771,14 @@ void Tugas5() {
             i = 0;
         }
     }
-    
-    draw_plane_body(fb, x_pivot, y_pivot, j, &blue);
-    draw_plane_wing_left(fb, xWL, yWL, j, &blue);
-    draw_plane_wing_right(fb, xWR, yWR, j, &blue);
-    draw_plane_wheels(fb, xWHL, yWHL, j, &blue);
-    draw_plane_wheels(fb, xWHR, yWHR, j, &blue);
-    draw_plane_propeller(fb, xPL, yPL, j, i, &blue);
-    draw_plane_propeller(fb, xPR, yPR, j, i, &blue);
+
+    draw_plane_body_clip(fb, x_pivot, y_pivot, j, &blue);
+    draw_plane_wing_left_clip(fb, xWL, yWL, j, &blue);
+    draw_plane_wing_right_clip(fb, xWR, yWR, j, &blue);
+    draw_plane_wheels_clip(fb, xWHL, yWHL, j, &blue);
+    draw_plane_wheels_clip(fb, xWHR, yWHR, j, &blue);
+    draw_plane_propeller_clip(fb, xPL, yPL, j, i, &blue);
+    draw_plane_propeller_clip(fb, xPR, yPR, j, i, &blue);
     draw_pilot(fb, x_pivot, y_pivot, j/8, &blue);
 }
 void Tugas6() {
@@ -1140,6 +1149,15 @@ void draw_rectangle(FrameBuffer& fb,int start_x, int start_y, int w, int h,Warna
     }
 }
 
+void draw_rectangle_clip(FrameBuffer& fb,int start_x, int start_y, int w, int h,Warna* color){
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < h; j++) {
+            fb.draw_point_clip(start_x + i, start_y + j,color);
+        }
+
+    }
+}
+
 void draw_line_low(FrameBuffer& fb,int x0,int y0,int x1,int y1,Warna* color) {
     int dx = x1 - x0;
     int dy = y1 - y0;
@@ -1214,6 +1232,81 @@ void draw_line(FrameBuffer& fb,int x0, int y0, int x1, int y1, Warna* color) {
     else
       draw_line_high(fb,x0, y0, x1, y1, color);
 
+}
+
+void draw_line_low_clip(FrameBuffer& fb,int x0,int y0,int x1,int y1,Warna* color) {
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int yi = 1;
+    if (dy < 0) {
+        yi = -1;
+        dy = -dy;
+    }
+    int D = 2*dy - dx;
+    int y = y0;
+
+    for (int x = x0; x <= x1; x++) {
+        fb.draw_point_clip(x,y,color);
+        if (D > 0) {
+            y += yi;
+            D -= 2*dx;
+        }
+        D += 2*dy;
+    }
+}
+
+void draw_line_high_clip(FrameBuffer& fb,int x0,int y0,int x1,int y1,Warna* color) {
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int xi = 1;
+    if (dx < 0) {
+        xi = -1;
+        dx = -dx;
+    }
+    int D = 2*dx - dy;
+    int x = x0;
+
+    for (int y = y0; y <= y1; y++) {
+        fb.draw_point_clip(x,y,color);
+        if (D > 0) {
+            x += xi;
+            D -= 2*dy;
+        }
+        D += 2*dx;
+    }
+}
+
+void draw_line_clip(FrameBuffer& fb,int x0, int y0, int x1, int y1, Warna* color) {
+    if (x0 < 10)
+        x0 = 10;
+    else if (x0 >= fb.getXRes()-10)
+        x0 = fb.getXRes()-10;
+
+    if (x1 < 10)
+        x1 = 10;
+    else if (x1 >= fb.getXRes()-10)
+        x1 = fb.getXRes()-10;
+
+    if (y0 < 10)
+        y0 = 10;
+    else if (y0 >= fb.getYRes()-10)
+        y0 = fb.getYRes()-10;
+
+    if (y1 < 10)
+        y1 = 10;
+    else if (y1 >= fb.getYRes()-10)
+        y1 = fb.getYRes()-10;
+
+    if (abs(y1 - y0) < abs(x1 - x0))
+    if (x0 > x1)
+      draw_line_low_clip(fb,x1, y1, x0, y0, color);
+    else
+      draw_line_low_clip(fb,x0, y0, x1, y1, color);
+  else
+    if (y0 > y1)
+      draw_line_high_clip(fb,x1, y1, x0, y0, color);
+    else
+      draw_line_high_clip(fb,x0, y0, x1, y1, color);
 }
 
 void point_draw_line_low(Matriks &m,int x0,int y0,int x1,int y1) {
@@ -1608,6 +1701,109 @@ void draw_plane_body(FrameBuffer& fb, int x, int y, float size, Warna* color) {
     draw_rectangle(fb, x-(size*20), y-(size*20), size*40, size*40, color);
 }
 
+void draw_plane_wing_right_clip(FrameBuffer& fb, int x, int y, float size, Warna* color) {
+    int line[4][4] = {
+        {x, y-(10*size), x, y+(size*10)}, {x, y+(size*10), x+(size*60), y+(size*10)},
+        {x+(size*60), y+(size*10), x+(size*60), y-(size*10)}, {x+(size*60), y-(size*10), x, y-(size*10)}
+    };
+
+    for (int i = 0; i < 4; i++) {
+       draw_line_clip(fb, line[i][0], line[i][1], line[i][2], line[i][3], color);
+    }
+    draw_rectangle_clip(fb, x, y-(size*10), size*60, size*20, color);
+}
+
+void draw_plane_wing_left_clip(FrameBuffer& fb, int x, int y, float size, Warna* color) {
+    int line[4][4] = {
+        {x, y-(size*10), x, y+(size*10)}, {x, y+(size*10), x-(size*60), y+(size*10)},
+        {x-(size*60), y+(size*10), x-(size*60), y-(size*10)}, {x-(size*60), y-(size*10), x, y-(size*10)}
+    };
+
+    for (int i = 0; i < 4; i++) {
+       draw_line_clip(fb, line[i][0], line[i][1], line[i][2], line[i][3], color);
+    }
+    draw_rectangle_clip(fb, x-(size*60), y-(size*10), size*60, size*20, color);
+}
+
+void draw_plane_propeller_clip(FrameBuffer& fb, int x, int y, float size, int position, Warna* color) {
+    int point[28][2];
+    int x_shifted, y_shifted;
+    double angle = 0.0;
+
+
+    // Horizontal Line
+    for (int i = 0; i < 7; i++) {
+        // X
+        point[i][0] = x - (size * 25);
+        point[i+7][0] = x + (size * 25);
+
+        //Y
+        point[i][1] = y - (i - 3);
+        point[i+7][1] = point[i][1];
+    }
+
+    // Vertical Line
+    for (int i = 0; i < 7; i++) {
+        // X
+        point[i+14][0] = x - (i - 3);
+        point[i+21][0] = point[i+14][0];
+
+        //Y
+        point[i+14][1] = y - (size * 25);
+        point[i+21][1] = y + (size * 25);
+    }
+
+    for (int i = 0; i < 28; i++) {
+        x_shifted = point[i][0] - x;
+        y_shifted = point[i][1] - y;
+        if (position == 1) {
+            angle = 30.0;
+        } else if (position == 2) {
+            angle = 60.0;
+        }
+        point[i][0] = x + (x_shifted * cos(angle * PI / 180)) - (y_shifted * sin(angle * PI / 180));
+        point[i][1] = y + (x_shifted * sin(angle * PI / 180)) + (y_shifted * cos(angle * PI / 180));
+    }
+
+    for (int i = 0; i < 7; i++) {
+        draw_line_clip(fb, point[i][0], point[i][1], point[i+7][0], point[i+7][1], color);
+    }
+
+    for (int i = 14; i < 21; i++) {
+        draw_line_clip(fb, point[i][0], point[i][1], point[i+7][0], point[i+7][1], color);
+    }
+}
+
+void draw_plane_wheels_clip(FrameBuffer& fb, int x, int y, float size, Warna* color) {
+    int line[6][4] = {
+        {x-(size*3), y, x-(size*3), y+(size*6)}, {x+(size*3), y, x+(size*3), y+(size*6)},
+        {x-(size*7), y+(size*6), x+(size*7), y+(size*6)}, {x+(size*7), y+(size*6), x+(size*7), y+(size*15)},
+        {x+(size*7), y+(size*15), x-(size*7), y+(size*15)}, {x-(size*7), y+(size*15), x-(size*7), y+(size*6)}
+    };
+
+    for (int i = 0; i < 6; i++) {
+       draw_line_clip(fb, line[i][0], line[i][1], line[i][2], line[i][3], color);
+    }
+
+    draw_rectangle_clip(fb, x-(size*3), y, size*6, size*6, color);
+    draw_rectangle_clip(fb, x-(size*7), y+(size*6), size*14, size*9, color);
+}
+
+void draw_plane_body_clip(FrameBuffer& fb, int x, int y, float size, Warna* color) {
+    int line[7][4] = {
+        // Body
+        {x-(size*20), y-(size*20), x-(size*20), y+(size*20)}, {x-(size*20), y+(size*20), x+(size*20), y+(size*20)},
+        {x+(size*20), y+(size*20), x+(size*20), y-(size*20)}, {x+(size*20), y-(size*20), x-(size*20), y-(size*20)},
+        // Kokpit
+        {x-(size*15), y-(size*20), x-(size*10), y-(size*35)}, {x+(size*15), y-(size*20), x+(size*10), y-(size*35)},
+        {x-(size*10), y-(size*35), x+(size*10), y-(size*35)},
+    };
+    for (int i = 0; i < 7; i++) {
+       draw_line_clip(fb, line[i][0], line[i][1], line[i][2], line[i][3], color);
+    }
+    draw_rectangle_clip(fb, x-(size*20), y-(size*20), size*40, size*40, color);
+}
+
 void draw_bullets(FrameBuffer& fb, int x, int y, float size, Warna* color) {
     int line[5][4] = {
         {x-(size*10), y-(size*10), x-(size*10), y+(size*10)}, {x-(size*10), y+(size*10), x+(size*10), y+(size*10)},
@@ -1719,7 +1915,7 @@ void draw_pilot(FrameBuffer& fb, int x, int y, float size, Warna* color) {
     }
 
     for (int i = 0; i < 28; i++) {
-        draw_line(fb, line[i][0], line[i][1], line[i][2], line[i][3], color);
+        draw_line_clip(fb, line[i][0], line[i][1], line[i][2], line[i][3], color);
     }
 }
 
