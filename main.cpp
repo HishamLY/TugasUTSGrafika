@@ -258,9 +258,10 @@ void Tugas3() {
     Word w_p('p');
     Matriks m = w_p.draw();
     int s_draw_x, s_draw_y;
-    s_draw_x = s_draw_y = 200;
-    for (int i = 0; i < 50; i++){
-        for (int j = 0; j < 50; j++){
+    s_draw_x = 150;
+    s_draw_y = 200;
+    for (int i = 0; i < 80; i++){
+        for (int j = 0; j < 80; j++){
             if (m.getVal(j,i) == 1){
                 fb.draw_point(s_draw_x+j,s_draw_y+i,&black);
             }
