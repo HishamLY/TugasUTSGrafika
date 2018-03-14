@@ -344,8 +344,8 @@ void Tugas3() {
     Matriks mh = w_h.draw();
     s_draw_x = 850;
     s_draw_y = 200;
-    for (int i = 0; i < 50; i++){
-        for (int j = 0; j < 50; j++){
+    for (int i = 0; i < 80; i++){
+        for (int j = 0; j < 80; j++){
             if (mh.getVal(j,i) == 1){
                 fb.draw_point(s_draw_x+j,s_draw_y+i,&black);
             }
