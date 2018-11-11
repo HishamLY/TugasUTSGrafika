@@ -31,6 +31,7 @@ void Tugas4();
 void Tugas5();
 void Tugas6();
 void Tugas7();
+void Visualisasi();
 
 // Supporting Function and Procedure
 void draw_rectangle(FrameBuffer& fb,int start_x, int start_y, int w, int h,Warna* color);
@@ -156,6 +157,9 @@ int main(int argc, char const *argv[]) {
       case '7':
         Tugas7();
         break;
+      case '8':
+        Visualisasi();
+        break;
     }
     if (key_pressed == 'q')
         break;
@@ -178,6 +182,7 @@ void DisplayMenu() {
   printw("5. Tugas 5\n");
   printw("6. Tugas 6\n");
   printw("7. Tugas 7\n");
+  printw("8. Visualisasi\n");
   refresh();
 
   // Set Blocking for User Input
@@ -258,10 +263,9 @@ void Tugas3() {
     Word w_p('p');
     Matriks m = w_p.draw();
     int s_draw_x, s_draw_y;
-    s_draw_x = 150;
-    s_draw_y = 200;
-    for (int i = 0; i < 80; i++){
-        for (int j = 0; j < 80; j++){
+    s_draw_x = s_draw_y = 200;
+    for (int i = 0; i < 50; i++){
+        for (int j = 0; j < 50; j++){
             if (m.getVal(j,i) == 1){
                 fb.draw_point(s_draw_x+j,s_draw_y+i,&black);
             }
@@ -1138,6 +1142,87 @@ void Tugas7() {
             }
         }
     }
+}
+
+void Visualisasi() {
+    initscr();
+    refresh();
+
+    // Peta properties
+    const int PETA_WIDTH = 1300;
+    const int PETA_HEIGHT = 750;
+    Matriks peta(PETA_HEIGHT, PETA_WIDTH);
+    const int start_draw_x = 300;
+    const int start_draw_y = 100;
+    const int start_draw_zoombox_x = start_draw_x + PETA_WIDTH + 20;
+    const int start_draw_zoombox_y = start_draw_y;
+
+    int arr_length = 29;
+
+    int garis[][4] = {
+        {325, 800, 1550, 800},
+        {350, 175, 350, 825}
+    };
+
+    int nilai_y[10] = {21, 32, 44, 32, 67, 89, 36, 69, 60, 95};
+
+    // for (int i = 0; i < 10; i++) cin >> nilai_y[i];
+
+    for (int i = 0; i < 10; i++) cout << nilai_y[i] << " ";
+
+    draw_rectangle(fb,start_draw_x,start_draw_y,PETA_WIDTH,PETA_HEIGHT,&green);
+
+    // garis x
+    for (int tebal = 0; tebal < 5; tebal++)
+        draw_line(fb, garis[0][0], garis[0][1] + tebal, garis[0][2], garis[0][3] + tebal, &black);
+
+    for (int tebal = 0; tebal < 5; tebal++) {
+        draw_line(fb, garis[0][2]-10, garis[0][3]+10+tebal, garis[0][2], garis[0][3]+tebal, &black);
+        draw_line(fb, garis[0][2]-10, garis[0][3]-10+tebal, garis[0][2], garis[0][3]+tebal, &black);
+    }
+
+    // garis y
+    for (int tebal = 0; tebal < 5; tebal++)
+        draw_line(fb, garis[1][0] + tebal, garis[1][1], garis[1][2] + tebal, garis[1][3], &black);
+
+    for (int tebal = 0; tebal < 5; tebal++) {
+        draw_line(fb, garis[1][0]-8, garis[1][1]+10+tebal-2, garis[1][0]+2, garis[1][1]+tebal-2, &black);
+        draw_line(fb, garis[1][0]+12, garis[1][1]+10+tebal-2, garis[1][0]+2, garis[1][1]+tebal-2, &black);
+    }
+
+    int x0 = 350;
+    int y0 = 800;
+
+    // batang
+    for (int idx = 1; idx < 11; idx++) {
+        for (int tinggi = 0; tinggi < nilai_y[idx-1]*6; tinggi++) {
+            for (int tebal = 0; tebal < 30; tebal++) {
+                draw_line(fb, x0+idx*100+tebal, y0-tinggi, x0+idx*100+tebal, y0-tinggi, &black);
+            }
+            usleep(700);
+        }
+    }
+
+    // marker sumbu y
+    for (int lebar = -3; lebar < 1100; lebar++) {
+        for (int idx = 1; idx < 11; idx++) {
+            for (int tebal = 0; tebal < 2; tebal++) {
+                draw_line(fb, x0-3, y0-idx*60+tebal, x0+lebar, y0-idx*60+tebal, &green);
+            }
+        }
+        usleep(400);    
+    }
+
+    for (int idx = 2; idx < 11; idx++) {
+        draw_line(fb, x0+(idx-1)*100+15, y0-nilai_y[idx-2]*6, x0+idx*100+15, y0-nilai_y[idx-1]*6, &red);
+        draw_line(fb, x0+(idx-1)*100+15, y0-nilai_y[idx-2]*6+1, x0+idx*100+15, y0-nilai_y[idx-1]*6+1, &red);
+        draw_line(fb, x0+(idx-1)*100+15, y0-nilai_y[idx-2]*6+2, x0+idx*100+15, y0-nilai_y[idx-1]*6+2, &red);
+        usleep(200000);
+    }
+
+    sleep(3);
+
+  // endwin();
 }
 
 // Supporting Function and Procedure
